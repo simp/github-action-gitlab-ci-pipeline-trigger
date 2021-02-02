@@ -1,0 +1,22 @@
+---
+name: Push test
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  do_thing:
+    name: Test action
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: op-ct/github-action-gitlab-ci-pipeline-trigger@main
+        with:
+          gitlab_group: simp
+          github_repository: ${{ github.repository }}
+          github_repository_owner: ${{ github.repository_owner }}
+          git_branch: ${{ github.ref }}
+          target_hashref: ${{ github.sha }}
+          gitlab_api_private_token: xxx
+          gitlab_server_url: xxx
+          gitlab_api_url: xxx

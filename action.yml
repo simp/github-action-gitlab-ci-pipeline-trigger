@@ -4,51 +4,55 @@ description: ''
 author: 'SIMP Team'
 inputs:
   gitlab_group:
-    description: 'xxx'
+    description: TODO
     required: true
+    default: ${{ github.event.organization.login }}
   github_repository:
-    description: 'xxx'
+    description: TODO
     required: true
-    default: 'xxx'
+    default: ${{ github.ref }}
   github_repository_owner:
-    description: 'xxx'
+    description: TODO
     required: true
-    default: 'xxx'
+    default: ${{ github.repository_owner }}
   git_branch:
-    description: 'xxx'
+    description: TODO
     required: true
-    default: 'xxx'
+    default: TODO
   gitlab_api_private_token:
-    description: 'xxx'
+    description: TODO
     required: true
-    default: 'xxx'
   target_hashref:
-    description: 'xxx'
+    description: TODO
     required: true
-    default: 'xxx'
+    default: TODO
   gitlab_server_url:
-    description: 'xxx'
-    required: true
-    default: 'xxx'
+    description: TODO
+    required: false
+    default: 'https://gitlab.com'
   gitlab_api_url:
-    description: 'xxx'
-    required: true
-    default: 'xxx'
+    description: TODO
+    required: false
+    default: 'https://gitlab.com/api/v4'
 branding:
   icon: gitlab
   color: green
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
+
 runs:
   using: "composite"
+
   steps:
-    - shell: bash
-      run: echo Hello ${{ inputs.who-to-greet }}.
-    - id: random-number-generator
-      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+    - name: Trigger CI
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
-      shell: bash
+      env:
+        GIT_BRANCH: ${{ inputs.git_branch }}
+        GITLAB_GROUP: ${{ inputs.gitlab_group }}
+        GITHUB_REPOSITORY: ${{ inputs.github_repository }}
+        GITHUB_REPOSITORY_OWNER: ${{ inputs.github_repository_owner }}
+        GITLAB_API_PRIVATE_TOKEN: ${{ inputs.gitlab_api_private_token }}
+        GET_HASHREF: ${{ inputs.target_hashref }}
+        GITLAB_SERVER_URL: ${{ inputs.gitlab_server_url }}
+        GITLAB_API_URL: ${{ inputs.gitlab_api_url }}
+        TARGET_HASHREF: ${{ inputs.target_hashref }}
+      run: ${{ github.action_path }}/trigger_glci_pipeline.bash
 
