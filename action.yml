@@ -1,0 +1,54 @@
+---
+name: 'Gitlab CI Pipeline Trigger'
+description: ''
+author: 'SIMP Team'
+inputs:
+  gitlab_group:
+    description: 'xxx'
+    required: true
+  github_repository:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  github_repository_owner:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  git_branch:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  gitlab_api_private_token:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  target_hashref:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  gitlab_server_url:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+  gitlab_api_url:
+    description: 'xxx'
+    required: true
+    default: 'xxx'
+branding:
+  icon: gitlab
+  color: green
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: echo Hello ${{ inputs.who-to-greet }}.
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+      shell: bash
+    - run: ${{ github.action_path }}/goodbye.sh
+      shell: bash
+
