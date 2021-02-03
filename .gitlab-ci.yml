@@ -9,6 +9,7 @@ shellcheck:
   tags: ['docker']
   script:
     - 'command -v shellcheck || if command -v apt-get; then apt-get update; apt-get install -y shellcheck; fi ||:'
+    - shellcheck --version
     - bash -c 'find . -type f -name "*.sh" -o -name "*.bash" | xargs shellcheck'
 
 yaml_lint:

@@ -42,6 +42,7 @@ for pipe_status in created waiting_for_resource preparing pending running; do
   curl_response_body="$("${CURL_CMD[@]}" "$pipe_status_url")"
 
   active_pipelines="$(echo "$curl_response_body" | jq -r '.[] | .id , .web_url')"
+  # shellcheck disable=SC2207
   active_pipeline_ids+=($(echo "$active_pipelines" | grep -E '^[0-9]*$'))
   [ -n "$active_pipelines" ] && echo "$active_pipelines" && echo
 

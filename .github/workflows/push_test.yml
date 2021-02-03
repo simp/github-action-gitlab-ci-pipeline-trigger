@@ -1,5 +1,5 @@
 ---
-name: Push test
+name: Verify Action
 on:
   push:
     branches:
