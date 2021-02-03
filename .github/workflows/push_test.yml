@@ -4,19 +4,25 @@ on:
   push:
     branches:
       - main
+      - releases/*
 
 jobs:
-  do_thing:
+  test_glci_trigger:
     name: Test action
     runs-on: ubuntu-16.04
     steps:
-      - uses: op-ct/github-action-gitlab-ci-pipeline-trigger@main
+      - uses: actions/checkout@v2
         with:
-          gitlab_group: simp
+          fetch-depth: 0  # Need full checkout to push to gitlab mirror
+          clean: true
+      - uses: simp/github-action-gitlab-ci-pipeline-trigger@main
+        with:
+          git_branch: main--ci--no-defaults
+          git_hashref: ${{ github.sha }}
+          gitlab_group: ${{ github.event.organization.login }}
+          gitlab_api_private_token: ${{ secrets.GITLAB_API_PRIVATE_TOKEN }}
+          gitlab_server_url: ${{ secrets.GITLAB_SERVER_URL }} # https://gitlab.com
+          gitlab_api_url:  ${{ secrets.GITLAB_API_URL }}      # https://gitlab.com/api/v4
           github_repository: ${{ github.repository }}
           github_repository_owner: ${{ github.repository_owner }}
-          git_branch: ${{ github.ref }}
-          target_hashref: ${{ github.sha }}
-          gitlab_api_private_token: xxx
-          gitlab_server_url: xxx
-          gitlab_api_url: xxx
+

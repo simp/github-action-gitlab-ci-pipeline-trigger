@@ -1,0 +1,19 @@
+---
+stages:
+  - 'validation'
+
+image: "ruby:2.5"
+
+shellcheck:
+  stage: 'validation'
+  tags: ['docker']
+  script:
+    - 'command -v shellcheck || if command -v apt-get; then apt-get update; apt-get install -y shellcheck; fi ||:'
+    - bash -c 'find . -type f -name "*.sh" -o -name "*.bash" | xargs shellcheck'
+
+yaml_lint:
+  stage: 'validation'
+  tags: ['docker']
+  script:
+    - 'gem install --conservative --minimal-deps yaml-lint'
+    - bash -c 'find . -type f -name "*.yaml" -o -name "*.yml" | xargs yaml-lint'

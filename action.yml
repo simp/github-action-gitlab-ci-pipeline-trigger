@@ -4,27 +4,25 @@ description: 'Pushes PR to GitLab repo to trigger GLCI, canceling all other GLCI
 author: 'SIMP Team'
 inputs:
   git_branch:
-    description: Branch name to push to GLCI
+    description: Branch name to use when pushing to gitlab/GLCI
     required: true
-    default: TODO
   git_hashref:
     description: Hashref of git commit to push to GLCI
     required: true
-    default: TODO
   gitlab_api_private_token:
     description: GitLab API private token (should have `api` scope)
     required: true
   gitlab_group:
-    description: TODO
+    description: Gitlab Group to push to
     required: true
     default: ${{ github.event.organization.login }}
   gitlab_server_url:
     description: Specify a GitLab server other than gitlab.com
-    required: false
+    required: true
     default: 'https://gitlab.com'
   gitlab_api_url:
     description: Specify a GitLab API other than gitlab.com
-    required: false
+    required: true
     default: 'https://gitlab.com/api/v4'
   github_repository:
     description: TODO

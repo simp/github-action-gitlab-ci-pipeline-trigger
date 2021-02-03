@@ -37,7 +37,7 @@ jq_same_pipeline_id_query="$(printf '.[] | select(.sha=="%s") | .id' "$GIT_HASHR
 for pipe_status in created waiting_for_resource preparing pending running; do
   pipe_status_url="${GITLAB_API_URL}/projects/${GITLAB_PROJECT_ID}/pipelines?ref=${GIT_BRANCH}&status=${pipe_status}"
 
-  printf "\n  ---- checking for CI pipelines with status '%s' for project '%s', branch '%s'\n" \
+  printf "\\n  ---- checking for CI pipelines with status '%s' for project '%s', branch '%s'\\n" \
     "$pipe_status" "$GITLAB_PROJECT_ID" "$GIT_BRANCH"
   curl_response_body="$("${CURL_CMD[@]}" "$pipe_status_url")"
 
@@ -51,23 +51,23 @@ for pipe_status in created waiting_for_resource preparing pending running; do
 done
 
 if [ "${#active_pipeline_ids[@]}" -gt 0 ]; then
-  printf "\n  ---- Found %s active pipeline ids:\n" "${#active_pipeline_ids[@]}"
+  printf "\\n  ---- Found %s active pipeline ids:\\n" "${#active_pipeline_ids[@]}"
   echo "${active_pipeline_ids[@]}"
   for pipe_id in "${active_pipeline_ids[@]}"; do
   [ -n "$same_sha_pipeline_id" ] && [ "$pipe_id" == "$same_sha_pipeline_id" ] && continue
-    printf "\n  ------ Cancelling pipeline ID %s...\n" "$pipe_id"
+    printf "\\n  ------ Cancelling pipeline ID %s...\\n" "$pipe_id"
     "${CURL_CMD[@]}" --request POST "${GITLAB_API_URL}/projects/${GITLAB_PROJECT_ID}/pipelines/${pipe_id}/cancel"
   done
 else
   echo No active pipelines found
 fi
-printf "\n\n"
+printf "\\n\\n"
 
 # Short-circuit GLCI trigger if there's already a pipeline for our ref
 if [ -n "$same_sha_pipeline_id" ]; then
   msg="No need to push '$GIT_BRANCH' to gitlab; Pipeline for same commit '$GIT_HASHREF' running at:"
   msg_url="https://${GITLAB_SERVER_URL#*://}/${GITLAB_GROUP}/${GITXXB_REPO_NAME}/-/pipelines/${same_sha_pipeline_id}"
-  printf "== %s\n   %s\n" "$msg" "$msg_url"
+  printf "== %s\\n   %s\\n" "$msg" "$msg_url"
   echo "::warning ::$msg $msg_url"
   exit 0
 fi
