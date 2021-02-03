@@ -38,7 +38,6 @@ branding:
 
 runs:
   using: "composite"
-
   steps:
     - name: Trigger CI
       shell: bash

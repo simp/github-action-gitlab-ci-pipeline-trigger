@@ -1,6 +1,6 @@
 # For releases with a SemVer tag, update the corresponding `v*` branch HEAD
 ---
-name: 'Release: Update HEAD of `v*` branch'
+name: 'Release: Bump `v*` branch HEAD'
 on:
   release:
     types:

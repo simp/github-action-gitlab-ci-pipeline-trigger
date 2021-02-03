@@ -154,12 +154,12 @@ This is an open source project open to anyone. This project welcomes contributio
 
 ## Feedback & Questions
 
-If you discover an issue, please report it at [GitHub
-issues](https://github.com/simp/github-action-gitlab-ci-pipeline-trigger/issues).
+If you discover an issue, please report it on our Jira at
+https://simp-project.atlassian.net/
 
 ## License
 
-Apache 2.0, See [LICENSE](https://github.com/simp/github-action-gitlab-ci-pipeline-trigger/blob/main/LICENSE.md) for more information.
+Apache 2.0, See [LICENSE](https://github.com/simp/github-action-gitlab-ci-pipeline-trigger/blob/main/LICENSE) for more information.
 
 
 
