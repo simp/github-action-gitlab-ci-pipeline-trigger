@@ -9,8 +9,6 @@ Live Dangerously and TRIGGER GITLAB CI FROM GITHUB ACTIONS (srsly: see disclaime
 [![license badge](https://img.shields.io/github/license/simp/github-action-gitlab-ci-pipeline-trigger)](./LICENSE)
 [![size badge](https://img.shields.io/github/size/simp/github-action-gitlab-ci-pipeline-trigger/dist/index.js)](./dist)
 
-
-
 * A detailed description of what the action does
 * Required input and output arguments
 * Optional input and output arguments

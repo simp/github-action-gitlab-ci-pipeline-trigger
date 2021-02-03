@@ -1,39 +1,39 @@
 ---
 name: 'Gitlab CI Pipeline Trigger'
-description: ''
+description: 'Pushes PR to GitLab repo to trigger GLCI, canceling all other GLCI pipelines for same branch'
 author: 'SIMP Team'
 inputs:
+  git_branch:
+    description: Branch name to push to GLCI
+    required: true
+    default: TODO
+  git_hashref:
+    description: Hashref of git commit to push to GLCI
+    required: true
+    default: TODO
+  gitlab_api_private_token:
+    description: GitLab API private token (should have `api` scope)
+    required: true
   gitlab_group:
     description: TODO
     required: true
     default: ${{ github.event.organization.login }}
+  gitlab_server_url:
+    description: Specify a GitLab server other than gitlab.com
+    required: false
+    default: 'https://gitlab.com'
+  gitlab_api_url:
+    description: Specify a GitLab API other than gitlab.com
+    required: false
+    default: 'https://gitlab.com/api/v4'
   github_repository:
     description: TODO
     required: true
-    default: ${{ github.ref }}
+    default: ${{ github.repository }}
   github_repository_owner:
     description: TODO
     required: true
     default: ${{ github.repository_owner }}
-  git_branch:
-    description: TODO
-    required: true
-    default: TODO
-  gitlab_api_private_token:
-    description: TODO
-    required: true
-  target_hashref:
-    description: TODO
-    required: true
-    default: TODO
-  gitlab_server_url:
-    description: TODO
-    required: false
-    default: 'https://gitlab.com'
-  gitlab_api_url:
-    description: TODO
-    required: false
-    default: 'https://gitlab.com/api/v4'
 branding:
   icon: gitlab
   color: green
@@ -45,14 +45,13 @@ runs:
     - name: Trigger CI
       shell: bash
       env:
+        GIT_HASHREF: ${{ inputs.git_hashref }}
         GIT_BRANCH: ${{ inputs.git_branch }}
         GITLAB_GROUP: ${{ inputs.gitlab_group }}
         GITHUB_REPOSITORY: ${{ inputs.github_repository }}
         GITHUB_REPOSITORY_OWNER: ${{ inputs.github_repository_owner }}
         GITLAB_API_PRIVATE_TOKEN: ${{ inputs.gitlab_api_private_token }}
-        GET_HASHREF: ${{ inputs.target_hashref }}
         GITLAB_SERVER_URL: ${{ inputs.gitlab_server_url }}
         GITLAB_API_URL: ${{ inputs.gitlab_api_url }}
-        TARGET_HASHREF: ${{ inputs.target_hashref }}
       run: ${{ github.action_path }}/trigger_glci_pipeline.bash
 

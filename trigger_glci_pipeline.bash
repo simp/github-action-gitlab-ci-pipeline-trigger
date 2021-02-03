@@ -5,8 +5,9 @@
 [ -z "$GITLAB_GROUP" ] && { echo '::error ::$GITLAB_GROUP cannot be empty!'; exit 88; }
 # shellcheck disable=SC2016
 [ -z "$GITLAB_API_PRIVATE_TOKEN" ] && { echo '::error ::$GITLAB_API_PRIVATE_TOKEN cannot be empty!'; exit 88; }
+GIT_HASHREF="${GIT_HASHREF:-$(git log -1 --pretty='%H')}"
 # shellcheck disable=SC2016
-[ -z "$TARGET_HASHREF" ] && { echo '::error ::$TARGET_HASHREF cannot be empty!'; exit 88; }
+[ -z "$GIT_HASHREF" ] && { echo '::error ::$GIT_HASHREF cannot be empty!'; exit 88; }
 # shellcheck disable=SC2016
 [ -z "$GITHUB_REPOSITORY" ] && { echo '::error ::$GITHUB_REPOSITORY cannot be empty!'; exit 88; }
 # shellcheck disable=SC2016
@@ -24,11 +25,12 @@ CURL_CMD=(curl --http1.0 --fail --silent --show-error \
   --header "Accept: application/json" \
 )
 
-echo "  --- Local target commit: $TARGET_HASHREF"
+
+echo "  --- Local target commit: $GIT_HASHREF"
 
 active_pipeline_ids=()
 same_sha_pipeline_id=""
-jq_same_pipeline_id_query="$(printf '.[] | select(.sha=="%s") | .id' "$TARGET_HASHREF")"
+jq_same_pipeline_id_query="$(printf '.[] | select(.sha=="%s") | .id' "$GIT_HASHREF")"
 
 # Cancel any active/pending GitLab CI pipelines for the same
 # project+branch, UNLESS it's already for this commit
@@ -63,7 +65,7 @@ printf "\n\n"
 
 # Short-circuit GLCI trigger if there's already a pipeline for our ref
 if [ -n "$same_sha_pipeline_id" ]; then
-  msg="No need to push '$GIT_BRANCH' to gitlab; Pipeline for same commit '$TARGET_HASHREF' running at:"
+  msg="No need to push '$GIT_BRANCH' to gitlab; Pipeline for same commit '$GIT_HASHREF' running at:"
   msg_url="https://${GITLAB_SERVER_URL#*://}/${GITLAB_GROUP}/${GITXXB_REPO_NAME}/-/pipelines/${same_sha_pipeline_id}"
   printf "== %s\n   %s\n" "$msg" "$msg_url"
   echo "::warning ::$msg $msg_url"
